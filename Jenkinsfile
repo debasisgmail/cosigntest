@@ -4,7 +4,7 @@
 pipeline {
   agent any
   environment {
-    GITHUB_TOKEN=credentials('debasis-testing')
+    GITHUB_TOKEN=credentials('debasisjenkins')
     IMAGE_NAME='darinpope/jenkins-example-cosign'
     IMAGE_VERSION='8.5-204'
   }
