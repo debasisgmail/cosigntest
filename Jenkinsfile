@@ -34,13 +34,5 @@ pipeline {
         sh 'docker push ghcr.io/$IMAGE_NAME:$IMAGE_VERSION'
       }
     }
-  }
-  /*
-  post {
-    always {
-      sh 'docker logout'
-    }
-  }
-*/
-  
+  } 
 }
