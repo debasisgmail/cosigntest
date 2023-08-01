@@ -9,7 +9,7 @@ pipeline {
     IMAGE_VERSION='8.5-204-v1'
     //DOCKER_CREDENTIALS=credentials('dockercredentials')
     COSIGN_PASSWORD=credentials('cosign-password')
-    COSIGN_PRIVATE_KEY=credentials('cosign_key')
+    COSIGN_PRIVATE_KEY=credentials('cosign-private-key')
     
   }
   stages {
