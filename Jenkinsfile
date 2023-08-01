@@ -4,34 +4,34 @@
 pipeline {
   agent any
   environment {
-    GITHUB_TOKEN=credentials('debasisjenkins')
+    //GITHUB_TOKEN=credentials('debasisjenkins')
     IMAGE_NAME='darinpope/jenkins-example-cosign'
-    IMAGE_VERSION='8.5-204'
+    IMAGE_VERSION='8.5-204-v1'
+    DOCKER_CREDENTIALS=credentials('dockercredentials')
+    
   }
   stages {
-    stage('cleanup') {
-      steps {
-        sh 'docker system prune -a --volumes --force'
-      }
-    }
     stage('build image') {
       steps {
         sh 'docker build -t $IMAGE_NAME:$IMAGE_VERSION .'
       }
     }
-    stage('login to GHCR') {
+ 
+    stage('login to Docker') {
       steps {
-        sh 'echo "$GITHUB_TOKEN_PSW" | docker login ghcr.io -u $GITHUB_TOKEN_USR --password-stdin'
+        sh 'docker login -u debasis12345 -p Cha'
       }
+
+       
     }
     stage('tag image') {
       steps {
-        sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION ghcr.io/$IMAGE_NAME:$IMAGE_VERSION'
+        sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION debasis12345/$IMAGE_NAME:$IMAGE_VERSION'
       }
     }
     stage('push image') {
       steps {
-        sh 'docker push ghcr.io/$IMAGE_NAME:$IMAGE_VERSION'
+        sh 'docker push debasis12345/$IMAGE_NAME:$IMAGE_VERSION'
       }
     }
   } 
