@@ -30,12 +30,12 @@ pipeline {
     }
     stage('tag image') {
       steps {
-        sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION debasis12345/deb:v2'
+        sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION debasis12345/deb:v3'
       }
     }
     stage('push image') {
       steps {
-        sh 'docker push debasis12345/deb:v2'
+        sh 'docker push debasis12345/deb:v3'
       }
     }
     stage('sign the container image') {
@@ -44,7 +44,7 @@ pipeline {
         sh 'cosign version'
         //sh 'cosign sign --key $COSIGN_PRIVATE_KEY ghcr.io/$IMAGE_NAME:$IMAGE_VERSION'
         sh 'cosign sign --key $COSIGN_PRIVATE_KEY debasis12345/deb:v2'
-        //sh 'cosign sign --key $COSIGN_PRIVATE_KEY debasis12345/deb:v2'
+        //sh 'cosign sign --key $COSIGN_PRIVATE_KEY debasis12345/deb:v3'
       }
     }
   } 
