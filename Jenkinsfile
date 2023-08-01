@@ -8,7 +8,7 @@ pipeline {
     IMAGE_NAME='debasisgmail/cosigntest'
     IMAGE_VERSION='8.5-204-v1'
     //DOCKER_CREDENTIALS=credentials('dockercredentials')
-    COSIGN_PRIVATE_KEY=credentials('cosign_pub')
+    COSIGN_PRIVATE_KEY=credentials('cosign_key')
     
   }
   stages {
@@ -39,7 +39,7 @@ pipeline {
     }
     stage('sign the container image') {
       steps {
-        withCredentials([usernamePassword(credentialsId: "$cosign_pub", passwordVariable: '', usernameVariable: '')])
+        withCredentials([usernamePassword(credentialsId: "$cosign_key", passwordVariable: '', usernameVariable: '')])
         sh 'cosign version'
         sh 'cosign sign --key $COSIGN_PRIVATE_KEY debasis12345/deb:v2'
       }
