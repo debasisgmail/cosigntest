@@ -7,7 +7,7 @@ pipeline {
     //GITHUB_TOKEN=credentials('debasisjenkins')
     IMAGE_NAME='darinpope/jenkins-example-cosign'
     IMAGE_VERSION='8.5-204-v1'
-    DOCKER_CREDENTIALS=credentials('dockercredentials')
+    //DOCKER_CREDENTIALS=credentials('dockercredentials')
     
   }
   stages {
