@@ -4,7 +4,7 @@
 pipeline {
   agent any
   environment {
-    GITHUB_TOKEN=credentials('debasisjenkins')
+    //GITHUB_TOKEN=credentials('debasisjenkins')
     IMAGE_NAME='debasisgmail/cosigntest'
     IMAGE_VERSION='8.5-204-v1'
     //DOCKER_CREDENTIALS=credentials('dockercredentials')
@@ -13,6 +13,7 @@ pipeline {
   stages {
     stage('build image') {
       steps {
+        sh 'sudo docker ps -a'
         sh 'sudo docker build -t $IMAGE_NAME:$IMAGE_VERSION .'
       }
     }
