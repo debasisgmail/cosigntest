@@ -63,7 +63,7 @@ pipeline {
     stage('verify the container image') {
       steps {
           echo "pre container image verified "
-          sh 'cosign verify --key $COSIGN_PUBLIC_KEY $USERNAME/deb:v5 -y'
+          sh 'cosign verify --key $COSIGN_PUBLIC_KEY $USERNAME/deb:v5'
           echo "post container image verified"
       }
     }
