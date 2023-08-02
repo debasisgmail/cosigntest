@@ -35,7 +35,7 @@ pipeline {
     stage('tag image') {
       steps {
           withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-              sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION $USERNAME/$IMAGE_NAME:$IMAGE_TAG'
+              sh 'docker tag $DOCKERFILE_PATH:$IMAGE_VERSION $USERNAME/$IMAGE_NAME:$IMAGE_TAG'
           }
       }
     }
