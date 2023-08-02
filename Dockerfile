@@ -1,3 +1,3 @@
 FROM busybox
-LABEL name=debasis
+LABEL name="debasis"
 
