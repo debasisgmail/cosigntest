@@ -2,8 +2,10 @@ pipeline {
   agent any
   environment {
     //GITHUB_TOKEN=credentials('debasisjenkins')
-    IMAGE_NAME='debasisgmail/cosigntest'
-    IMAGE_VERSION='8.5-204-v1'
+    IMAGE_NAME='deb'
+    DOCKERFILE_PATH='debasisgmail/cosigntest'
+    IMAGE_VERSION='latest'
+    IMAGE_TAG='v2'
     //DOCKER_CREDENTIALS=credentials('docker-credentials')
     COSIGN_PASSWORD=credentials('cosign-password')
     COSIGN_PRIVATE_KEY=credentials('cosign-private-key')
@@ -18,7 +20,7 @@ pipeline {
     }   
     stage('build image') {
       steps {
-          sh 'docker build -t $IMAGE_NAME:$IMAGE_VERSION .'
+          sh 'docker build -t $DOCKERFILE_PATH:$IMAGE_VERSION .'
       }
     }
  
@@ -33,14 +35,14 @@ pipeline {
     stage('tag image') {
       steps {
           withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-              sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION $USERNAME/deb:v5'
+              sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION $USERNAME/$IMAGE_NAME:$IMAGE_TAG'
           }
       }
     }
     stage('push image') {
       steps {
           withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-              sh 'docker push $USERNAME/deb:v5'
+              sh 'docker push $USERNAME/$IMAGE_NAME:$IMAGE_TAG'
           }
       }
     }
@@ -48,7 +50,7 @@ pipeline {
       steps {
           withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
               sh 'cosign version'
-              sh 'cosign sign --key $COSIGN_PRIVATE_KEY $USERNAME/deb:v5 -y'
+              sh 'cosign sign --key $COSIGN_PRIVATE_KEY $USERNAME/$IMAGE_NAME:$IMAGE_TAG -y'
               
           }
       }
@@ -56,7 +58,7 @@ pipeline {
 
     stage('verify the container image') {
       steps {
-          sh 'cosign verify --key $COSIGN_PUBLIC_KEY debasis12345/deb:v5'
+          sh 'cosign verify --key $COSIGN_PUBLIC_KEY debasis12345/$IMAGE_NAME:$IMAGE_TAG'
       }
     }
   } 
