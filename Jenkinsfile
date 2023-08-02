@@ -11,10 +11,13 @@ pipeline {
     
   }
   stages {
+      stage('cleanup') {
+      steps {
+        sh 'docker system prune -a --volumes --force'
+      }
+    }   
     stage('build image') {
       steps {
-          sh 'whoami'
-          sh 'docker ps -a'
           sh 'docker build -t $IMAGE_NAME:$IMAGE_VERSION .'
       }
     }
@@ -25,7 +28,6 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             sh 'docker login -u $USERNAME -p $PASSWORD'
         }
-        //sh 'docker login --username debasis12345 --password Chakuli@123456'
       }
 
        
@@ -35,7 +37,6 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
               sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION $USERNAME/deb:v5'
           }
-        //sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION $USERNAME/deb:v4'
       }
     }
     stage('push image') {
@@ -43,7 +44,6 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
               sh 'docker push $USERNAME/deb:v5'
           }
-        //sh 'docker push $USERNAME/deb:v4'
       }
     }
     stage('sign the container image') {
@@ -53,10 +53,6 @@ pipeline {
               sh 'cosign sign --key $COSIGN_PRIVATE_KEY $USERNAME/deb:v5 -y'
               
           }
-        //withCredentials([usernamePassword(credentialsId: "$cosign_key", passwordVariable: '', usernameVariable: '')])
-       // sh 'cosign version'
-        //sh 'cosign sign --key $COSIGN_PRIVATE_KEY ghcr.io/$IMAGE_NAME:$IMAGE_VERSION'
-        //sh 'cosign sign --key $COSIGN_PRIVATE_KEY $USERNAME/deb:v5 -y'
       }
     }
 
