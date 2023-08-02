@@ -7,6 +7,7 @@ pipeline {
     //DOCKER_CREDENTIALS=credentials('docker-credentials')
     COSIGN_PASSWORD=credentials('cosign-password')
     COSIGN_PRIVATE_KEY=credentials('cosign-private-key')
+    COSIGN_PUBLIC_KEY=credentials('cosign-public-key')
     
   }
   stages {
@@ -56,6 +57,14 @@ pipeline {
        // sh 'cosign version'
         //sh 'cosign sign --key $COSIGN_PRIVATE_KEY ghcr.io/$IMAGE_NAME:$IMAGE_VERSION'
         //sh 'cosign sign --key $COSIGN_PRIVATE_KEY $USERNAME/deb:v5 -y'
+      }
+    }
+
+    stage('verify the container image') {
+      steps {
+          echo "pre container image verified "
+          sh 'cosign verify --key $COSIGN_PUBLIC_KEY $USERNAME/deb:v5 -y'
+          echo "post container image verified"
       }
     }
   } 
