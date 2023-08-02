@@ -32,7 +32,7 @@ pipeline {
     stage('tag image') {
       steps {
           withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-              sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION $USERNAME/deb:v4'
+              sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION $USERNAME/deb:v5'
           }
         //sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION $USERNAME/deb:v4'
       }
@@ -40,7 +40,7 @@ pipeline {
     stage('push image') {
       steps {
           withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-              sh 'docker push $USERNAME/deb:v4'
+              sh 'docker push $USERNAME/deb:v5'
           }
         //sh 'docker push $USERNAME/deb:v4'
       }
@@ -49,13 +49,13 @@ pipeline {
       steps {
           withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
               sh 'cosign version'
-              sh 'cosign sign --key $COSIGN_PRIVATE_KEY $USERNAME/deb:v4 -y'
+              sh 'cosign sign --key $COSIGN_PRIVATE_KEY $USERNAME/deb:v5 -y'
               
           }
         //withCredentials([usernamePassword(credentialsId: "$cosign_key", passwordVariable: '', usernameVariable: '')])
        // sh 'cosign version'
         //sh 'cosign sign --key $COSIGN_PRIVATE_KEY ghcr.io/$IMAGE_NAME:$IMAGE_VERSION'
-        //sh 'cosign sign --key $COSIGN_PRIVATE_KEY $USERNAME/deb:v4 -y'
+        //sh 'cosign sign --key $COSIGN_PRIVATE_KEY $USERNAME/deb:v5 -y'
       }
     }
   } 
