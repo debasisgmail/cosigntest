@@ -28,9 +28,7 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             sh 'docker login -u $USERNAME -p $PASSWORD'
         }
-      }
-
-       
+      }       
     }
     stage('tag image') {
       steps {
@@ -58,9 +56,7 @@ pipeline {
 
     stage('verify the container image') {
       steps {
-          echo "pre container image verified "
           sh 'cosign verify --key $COSIGN_PUBLIC_KEY debasis12345/deb:v5'
-          echo "post container image verified"
       }
     }
   } 
