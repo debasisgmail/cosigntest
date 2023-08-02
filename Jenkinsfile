@@ -1,7 +1,6 @@
 pipeline {
   agent any
   environment {
-    //GITHUB_TOKEN=credentials('debasisjenkins')
     IMAGE_NAME='deb'
     DOCKERFILE_PATH='debasisgmail/cosigntest'
     IMAGE_VERSION='latest'
@@ -26,7 +25,6 @@ pipeline {
  
     stage('login to Docker') {
       steps {
-       //withCredentials([usernamePassword(credentialsId: "$docker-credentials", passwordVariable: '', usernameVariable: '')])
         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             sh 'docker login -u $USERNAME -p $PASSWORD'
         }
