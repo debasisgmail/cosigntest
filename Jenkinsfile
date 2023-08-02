@@ -5,7 +5,7 @@ pipeline {
     //GITHUB_TOKEN=credentials('debasisjenkins')
     IMAGE_NAME='debasisgmail/cosigntest'
     IMAGE_VERSION='8.5-204-v1'
-    //DOCKER_CREDENTIALS=credentials('docker-credentials')
+    DOCKER_CREDENTIALS=credentials('docker-credentials')
     COSIGN_PASSWORD=credentials('cosign-password')
     COSIGN_PRIVATE_KEY=credentials('cosign-private-key')
     
@@ -21,8 +21,9 @@ pipeline {
  
     stage('login to Docker') {
       steps {
-       withCredentials([usernamePassword(credentialsId: "$docker-credentials", passwordVariable: 'docker_password', usernameVariable: 'docker_user')])
+       withCredentials([usernamePassword(credentialsId: "$DOCKER_CREDENTIALS", passwordVariable: 'docker_password', usernameVariable: 'docker_user')])
         //sh 'docker login --username debasis12345 --password Chakuli@123456'
+        echo "testing inside docker login"
         sh """docker login --username $docker_user --password $docker_password"""
       }
 
