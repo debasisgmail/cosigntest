@@ -4,7 +4,7 @@ pipeline {
     IMAGE_NAME='deb'
     DOCKERFILE_PATH='debasisgmail/cosigntest'
     IMAGE_VERSION='latest'
-    IMAGE_TAG='v2'
+    IMAGE_TAG='v3'
     //DOCKER_CREDENTIALS=credentials('docker-credentials')
     COSIGN_PASSWORD=credentials('cosign-password')
     COSIGN_PRIVATE_KEY=credentials('cosign-private-key')
